@@ -25,9 +25,10 @@ LED_FLOW_COUNT = 15 # 流れるパターンの個数
 do_threading = True
 
 bpm = 110
+
 led_status = {}
-led_status["colorA"] = [0, 255, 0] #RGB 0~255
-led_status["colorB"] = [0, 255, 0] #RGB 0~255
+led_status["colorA"] = 0#RGB 0~255
+led_status["colorB"] = 100 #RGB 0~255
 led_status["brightness"] = 0 # 0~255
 led_status["count"] = 0 # 0~LED_MAX_COUNT
 
@@ -153,12 +154,12 @@ def change_led_status(bpm):
 global変数"led_status"の値からLEDの点灯パターンのリストを作成
 """
 def make_led_pattern_list():
-    led_pattern = [0 for i in range(LED_MAX_COUNT)]
+    led_pattern = [[0, 0] for i in range(LED_MAX_COUNT)]
     mode = led_status["mode"]
 
     if mode == 0:
         for i in range(LED_MAX_COUNT):
-            led_pattern[i] = LED_MAX_BRIGHT if led_status["count"] >= i else 0
+            led_pattern[i][0] = LED_MAX_BRIGHT if led_status["count"] >= i else 0
 
     elif mode == 1 or mode == 2:
         center = LED_MAX_COUNT//2
@@ -176,8 +177,6 @@ def make_led_pattern_list():
         end_point = led_status["count"]
         for i in range(LED_MAX_COUNT):
             led_pattern[i] = LED_MAX_BRIGHT if start_point <= i <= end_point else 0
-
-
 
     return led_pattern
 
